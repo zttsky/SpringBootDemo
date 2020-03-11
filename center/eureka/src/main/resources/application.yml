@@ -1,0 +1,16 @@
+#暴露端口
+server:
+  port: ${SERVER_PORT:8761}
+#指定名称 唯一
+spring:
+  application:
+    name: ${EUREKA_NAME:eureka-server}
+#注册中心
+eureka:
+  client:
+    #是否要注册到其他Server上。如果我的Server上其实开放了一些Http接口供调用，那么就需要注册，这样其他的Client才能发现我的服务，才能通过RPC调用我提供的Http接口。如果我的Server没有提供对外Http接口，那么这个参数可以设置为false。
+    registerWithEureka: false
+    #是否需要拉取服务信息。和是否注册一样，如果我的Server需要调用其他的Client的Http接口，那么就需要获取相应的服务发现信息，这样才能正常的调用。同时这个参数还有一个重要的作用，就是决定Server在初始化时是否立即全量同步其他节点的服务信息！！！Server初始化时会先初始化其内置的Client。若配置了fetchRegistry=true，那么Client在初始化时会从其他Server全量拉取服务信息，放进Client容器中。Server在初始化时会尝试同步Client容器里的服务信息，如果fetchRegistry=false，服务信息不存在，只能被动的等其他Server节点以增量的形式同步过来(Client在执行注册和心跳时对应的注册Server节点会广播此事件，同步给其他的Server节点。当其他Server节点还没有此服务信息时，改为注册此服务信息)。当然正常的通过心跳来同步，最多也仅需要30S而已，是否需要设置此参数就看各自的需求了。
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${EUREKA_ZONE_HOST:localhost}:${EUREKA_ZONE_PORT:8761}/eureka/

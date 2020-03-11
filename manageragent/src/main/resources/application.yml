@@ -1,0 +1,45 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: agent
+  zipkin:
+    base-url: http://192.168.1.108:9411
+    enabled: true
+    #    sender:
+    #      type: rabbit
+    sleuth:
+      sampler:
+        probability: 1.0
+#  boot:
+#    admin:
+#      client:
+#        url: http://localhost:8769
+#  redis:
+#    #    database: 0
+#    # Redis服务器地址
+#    host: 192.168.1.120
+#    # Redis服务器连接端口
+#    port: 6379
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_ZONE_HOST:localhost}:${EUREKA_ZONE_PORT:8761}/eureka/
+
+netty:
+  server:
+    port: 11211
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    health:
+      sensitive: false #关闭过滤敏感信息
+  health:
+    redis:
+      enabled: false # Enable Redis health check.
+  endpoint:
+    health:
+      show-details: ALWAYS
